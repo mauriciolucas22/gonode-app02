@@ -20,6 +20,8 @@ nunjucks.configure(path.resolve('app', 'views'), {
 });
 
 app.set('view engine', 'njk');
+
+// compreende os campos inputs
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/', routes);
