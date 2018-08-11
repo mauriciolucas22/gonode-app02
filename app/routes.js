@@ -22,6 +22,7 @@ routes.use((req, res, next) => {
 
 routes.get('/', authController.singin);
 routes.get('/singup', authController.singup);
+routes.get('/singout', authController.singout);
 routes.get('/app/dashboard', dashboardController.index);
 
 /**

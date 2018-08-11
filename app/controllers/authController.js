@@ -72,4 +72,12 @@ module.exports = {
       res.redirect('app/dashboard');
     });
   },
+
+  // deslogar
+  singout(req, res) {
+    // destroi a sesion e redireciona pro '/'
+    return req.session.destroy(() => {
+      res.redirect('/');
+    });
+  },
 };
