@@ -3,8 +3,9 @@ const express = require('express');
 const routes = express.Router();
 
 // import controllers
-const userController = require('./controllers/userController');
+const authController = require('./controllers/authController');
 
-routes.get('/', userController.index);
+routes.get('/', authController.singin);
+routes.get('/singup', authController.singup);
 
 module.exports = routes;
