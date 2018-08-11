@@ -2,8 +2,15 @@ const express = require('express');
 
 const routes = express.Router();
 
+// import middleware auth
+const authMiddleware = require('./middlewares/auth');
+
 // import controllers
 const authController = require('./controllers/authController');
+const dashboardController = require('./controllers/dashboardController');
+
+// define middleware para todas as rotas que comecem com /app
+routes.use('/app', authMiddleware);
 
 // middleware executado em todas as telas
 routes.use((req, res, next) => {
@@ -15,6 +22,7 @@ routes.use((req, res, next) => {
 
 routes.get('/', authController.singin);
 routes.get('/singup', authController.singup);
+routes.get('/app/dashboard', dashboardController.index);
 
 /**
  * GET: busca informações do server
