@@ -35,4 +35,41 @@ module.exports = {
     req.flash('success', 'Usuário cadastrado com sucesso');
     return res.redirect('/');
   },
+
+  async authenticate(req, res) {
+    // obtem email e password da view
+    const { email, password } = req.body;
+
+    // obtem email no banco de dados
+    // chamada é  assincrona, antão use await
+    const user = await User.findOne({ where: { email } });
+
+    // verifica se existe
+    if (!user) {
+      req.flash('error', 'Usuário inexistente');
+      // sempre use return, se não ele segue o codigo
+      return res.redirect('back');
+    }
+
+    /**
+     * verifica se as senhas não batem
+     * password: vem da view
+     * user.password: obtida do banco de dados
+     */
+    if (!await bcrypt.compare(password, user.password)) {
+      req.flash('error', 'Senha incorreta');
+      return res.redirect('back');
+    }
+
+    /**
+     * se senha for correta
+     * cria session para user
+     */
+    req.session.user = user;
+
+    // salva session usando callback
+    return req.session.save(() => {
+      res.redirect('app/dashboard');
+    });
+  },
 };

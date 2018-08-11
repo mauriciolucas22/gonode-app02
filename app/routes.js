@@ -23,5 +23,6 @@ routes.get('/singup', authController.singup);
  * DELETE: ...
  */
 routes.post('/register', authController.register);
+routes.post('/authenticate', authController.authenticate);
 
 module.exports = routes;
