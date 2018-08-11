@@ -19,6 +19,9 @@ module.exports = {
     const { email } = req.body;
 
     if (await User.findOne({ where: { email } })) {
+      // mostra a msg na tela
+      req.flash('error', 'E-mail já cadastrado');
+
       // string back serve para voltar para rota anterior, no cado o '/singup'
       return res.redirect('back');
     }
@@ -29,6 +32,7 @@ module.exports = {
     // passa as proprieade de req.body e sobreescreve o password
     await User.create({ ...req.body, password });
 
+    req.flash('success', 'Usuário cadastrado com sucesso');
     return res.redirect('/');
   },
 };

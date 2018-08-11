@@ -5,6 +5,14 @@ const routes = express.Router();
 // import controllers
 const authController = require('./controllers/authController');
 
+// middleware executado em todas as telas
+routes.use((req, res, next) => {
+  // locals são variaveis passas para as views
+  res.locals.flashSuccess = req.flash('success');
+  res.locals.flashError = req.flash('error');
+  next();
+});
+
 routes.get('/', authController.singin);
 routes.get('/singup', authController.singup);
 
