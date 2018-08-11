@@ -6,6 +6,9 @@ const routes = require('./app/routes');
 
 const app = express();
 
+// config app
+app.use(express.static(path.resolve('app', 'public')));
+
 // imports de models: retornas todos os models criados
 // const { User } = require('./app/models');
 
