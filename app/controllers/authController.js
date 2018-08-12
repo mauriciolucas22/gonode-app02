@@ -14,63 +14,72 @@ module.exports = {
     return res.render('auth/singup');
   },
 
-  async register(req, res) {
-    // req.body: informações enviadas pela view com POST
-    const { email } = req.body;
+  async register(req, res, next) {
+    // try pega qualquer error
+    try {
+      // req.body: informações enviadas pela view com POST
+      const { email } = req.body;
 
-    if (await User.findOne({ where: { email } })) {
-      // mostra a msg na tela
-      req.flash('error', 'E-mail já cadastrado');
+      if (await User.findOne({ where: { email } })) {
+        // mostra a msg na tela
+        req.flash('error', 'E-mail já cadastrado');
 
-      // string back serve para voltar para rota anterior, no cado o '/singup'
-      return res.redirect('back');
+        // string back serve para voltar para rota anterior, no cado o '/singup'
+        return res.redirect('back');
+      }
+
+      // bcrypt para password
+      const password = await bcrypt.hash(req.body.password, 5);
+
+      // passa as proprieade de req.body e sobreescreve o password
+      await User.create({ ...req.body, password });
+
+      req.flash('success', 'Usuário cadastrado com sucesso');
+      return res.redirect('/');
+    } catch (err) {
+      return next(err);
     }
-
-    // bcrypt para password
-    const password = await bcrypt.hash(req.body.password, 5);
-
-    // passa as proprieade de req.body e sobreescreve o password
-    await User.create({ ...req.body, password });
-
-    req.flash('success', 'Usuário cadastrado com sucesso');
-    return res.redirect('/');
   },
 
-  async authenticate(req, res) {
-    // obtem email e password da view
-    const { email, password } = req.body;
+  async authenticate(req, res, next) {
+    try {
+      // obtem email e password da view
+      const { email, password } = req.body;
 
-    // obtem email no banco de dados
-    // chamada é  assincrona, antão use await
-    const user = await User.findOne({ where: { email } });
+      // obtem email no banco de dados
+      // chamada é  assincrona, antão use await
+      const user = await User.findOne({ where: { email } });
 
-    // verifica se existe
-    if (!user) {
-      req.flash('error', 'Usuário inexistente');
-      // sempre use return, se não ele segue o codigo
-      return res.redirect('back');
+      // verifica se existe
+      if (!user) {
+        req.flash('error', 'Usuário inexistente');
+        // sempre use return, se não ele segue o codigo
+        return res.redirect('back');
+      }
+
+      /**
+       * verifica se as senhas não batem
+       * password: vem da view
+       * user.password: obtida do banco de dados
+       */
+      if (!await bcrypt.compare(password, user.password)) {
+        req.flash('error', 'Senha incorreta');
+        return res.redirect('back');
+      }
+
+      /**
+       * se senha for correta
+       * cria session para user
+       */
+      req.session.user = user;
+
+      // salva session usando callback
+      return req.session.save(() => {
+        res.redirect('app/dashboard');
+      });
+    } catch (err) {
+      return next(err);
     }
-
-    /**
-     * verifica se as senhas não batem
-     * password: vem da view
-     * user.password: obtida do banco de dados
-     */
-    if (!await bcrypt.compare(password, user.password)) {
-      req.flash('error', 'Senha incorreta');
-      return res.redirect('back');
-    }
-
-    /**
-     * se senha for correta
-     * cria session para user
-     */
-    req.session.user = user;
-
-    // salva session usando callback
-    return req.session.save(() => {
-      res.redirect('app/dashboard');
-    });
   },
 
   // deslogar

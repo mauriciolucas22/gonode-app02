@@ -35,4 +35,26 @@ routes.get('/app/dashboard', dashboardController.index);
 routes.post('/register', authController.register);
 routes.post('/authenticate', authController.authenticate);
 
+// middleware 404
+routes.use((req, res) => res.render('errors/404'));
+
+/**
+ * middlewares de error
+ * devem receber 4 parâmetros: err, req, res, next
+*/
+
+routes.use((err, req, res, _next) => {
+  /**
+   * req.status: recebe o status de HTTP
+   * 500: error de servidor
+   *
+   * se ambiente de produção nao mostra o erro
+   */
+  res.status(err.status || 500);
+  return res.render('errors/index', {
+    message: err.message,
+    error: process.env.NODE_ENV === 'production' ? {} : err,
+  });
+});
+
 module.exports = routes;
