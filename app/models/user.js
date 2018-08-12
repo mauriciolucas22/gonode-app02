@@ -18,5 +18,9 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
   });
 
+  User.associate = (models) => {
+    User.hasMany(models.Category); // pode possuir varias categorias
+  };
+
   return User;
 };
