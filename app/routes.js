@@ -2,8 +2,9 @@ const express = require('express');
 
 const routes = express.Router();
 
-// import middleware auth
+// import middlewares
 const authMiddleware = require('./middlewares/auth');
+const guestMiddleware = require('./middlewares/guest');
 
 // import controllers
 const authController = require('./controllers/authController');
@@ -20,8 +21,8 @@ routes.use((req, res, next) => {
   next();
 });
 
-routes.get('/', authController.singin);
-routes.get('/singup', authController.singup);
+routes.get('/', guestMiddleware, authController.singin);
+routes.get('/singup', guestMiddleware, authController.singup);
 routes.get('/singout', authController.singout);
 routes.get('/app/dashboard', dashboardController.index);
 
