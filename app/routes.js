@@ -9,9 +9,7 @@ const guestMiddleware = require('./middlewares/guest');
 // import controllers
 const authController = require('./controllers/authController');
 const dashboardController = require('./controllers/dashboardController');
-
-// define middleware para todas as rotas que comecem com /app
-routes.use('/app', authMiddleware);
+const categoryController = require('./controllers/categoryController');
 
 // middleware executado em todas as telas
 routes.use((req, res, next) => {
@@ -21,10 +19,25 @@ routes.use((req, res, next) => {
   next();
 });
 
+/**
+ * Auth
+ */
 routes.get('/', guestMiddleware, authController.singin);
 routes.get('/singup', guestMiddleware, authController.singup);
 routes.get('/singout', authController.singout);
+
+/**
+ * Dashboard
+ */
 routes.get('/app/dashboard', dashboardController.index);
+// define middleware para todas as rotas que comecem com /app
+routes.use('/app', authMiddleware);
+
+/**
+ * Categoria
+ */
+routes.post('/app/categories/create', categoryController.store);
+
 
 /**
  * GET: busca informações do server
