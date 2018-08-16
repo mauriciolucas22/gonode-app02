@@ -17,12 +17,26 @@ module.exports = {
   },
 
   async show(req, res, next) {
-    const categories = await Category.findAll({
-      include: [Snippet],
-      where: {
-        UserId: req.session.user.id,
-      },
-    });
-    return res.render('categories/show', { categories });
+    try {
+      const categories = await Category.findAll({
+        include: [Snippet],
+        where: {
+          UserId: req.session.user.id,
+        },
+      });
+
+      const snippets = await Snippet.findAll({
+        // req.params.? tem acessos aos parametros da url
+        where: { CategoryId: req.params.id },
+      });
+
+      return res.render('categories/show', {
+        categories,
+        snippets,
+        activeCategory: req.params.id,
+      });
+    } catch (err) {
+      return next(err);
+    }
   },
 };

@@ -8,10 +8,12 @@
         <a href="#">Novo Snippet</a>
       </div>
 
-      <a href="#">
-          <strong>Meu snippet</strong>
-          <p>Conteudo</p>
+      {% for snippet in snippets %}
+        <a href="/app/categories/{{ activeCategory }}/snippets/{{ snippet.id }}">
+          <strong>{{ snippet.title }}</strong>
+          <p>{{ snippet.excerpt }}</p>
         </a>
+      {% endfor %}
     </section>
   </div>
 {% endblock %}
