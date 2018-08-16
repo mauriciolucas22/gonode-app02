@@ -37,6 +37,7 @@ routes.use('/app', authMiddleware);
  * Categoria
  */
 routes.post('/app/categories/create', categoryController.store);
+routes.get('/app/categories/:id', categoryController.show);
 
 
 /**

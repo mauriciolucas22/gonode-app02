@@ -2,37 +2,6 @@
 
 {% block body %}
   <div class="wrapper">
-    <nav id="main">
-      <div class="header">
-        <strong>Minha biblioteca</strong>
-        <a href="/singout">Sair</strong>
-      </div>
-
-      <div class="categories">
-        <strong>Categorias</strong>
-
-        <ul>
-          {% for category in categories %}
-            <li>
-              <a href="/app/categories/{{ category.id }}">
-                {{ category.title }}
-                <span>{{ category.Snippets.length }}</span>
-              </a>
-            </li>
-          {% endfor %}
-        </ul>
-
-        <a href="#" data-modal-open="#new-category">Nova Categoria</a>
-      </div>
-    </nav>
-
-    <div class="modal" id="new-category">
-      <form class="modal-content" method="POST" action="/app/categories/create">
-        <input type="text" name="title" placeholder="Titulo da categoria" />
-
-        <button type="submit">Salvar Categoria</button>
-        <a href="#" data-modal-close="#new-category">Cancelar</a>
-      </form>
-    </div>
+    {% include 'partials/nav.njk' %}
   </div>
 {% endblock %}
