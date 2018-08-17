@@ -39,4 +39,16 @@ module.exports = {
       return next(err);
     }
   },
+
+  async destroy(req, res, next) {
+    try {
+      await Category.destroy({ where: { id: req.params.activeCategory } });
+
+      req.flash('success', 'Categoria deletada!');
+
+      return res.redirect('/app/dashboard');
+    } catch (err) {
+      return next(err);
+    }
+  },
 };

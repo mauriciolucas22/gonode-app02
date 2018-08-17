@@ -39,6 +39,7 @@ routes.use('/app', authMiddleware);
  */
 routes.post('/app/categories/create', categoryController.store);
 routes.get('/app/categories/:id', categoryController.show);
+routes.delete('/app/categories/:activeCategory', categoryController.destroy);
 
 /**
  * Snippets
