@@ -227,6 +227,26 @@ input:focus, textarea:focus {
   transition: all .2s;
 }
 
+.delete-category {
+  height: 50px;
+  width: 100%;
+  line-height: 50px;
+  display: block;
+  border-radius: 3px;
+  border: 0;
+  margin-bottom: 10px;
+  background: rgb(165, 49, 74);
+  color: #FFF;
+  text-decoration: none;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  transition: all .2s;
+}
+.delete-category:hover {
+  background: #CC6161;
+}
+
 .wrapper .snippets-list .list-header a:hover {
   background: #0BAB85;
 }
@@ -278,6 +298,7 @@ input:focus, textarea:focus {
 
 .wrapper .snippet-content form button {
   color: #F57777;
+  background: transparent;
   font-size: 14px;
   border: 0;
   margin-left: 10px;
